@@ -1,0 +1,178 @@
+
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:Arial,sans-serif;background:#fff;min-height:600px;display:flex;flex-direction:column;}
+
+  /* HEADER */
+  .hdr{display:flex;align-items:center;justify-content:space-between;padding:10px 18px 8px;border-bottom:1px solid #ddd;}
+  .logo-area{display:flex;align-items:center;gap:0;}
+
+  /* SVG LOGO */
+  .logo-svg{width:340px;height:60px;}
+
+  .powered{text-align:right;line-height:1.2;}
+  .powered-by{font-size:11px;color:#888;font-style:italic;}
+  .contineo{font-size:26px;font-weight:900;color:#2980b9;font-style:italic;letter-spacing:-0.5px;}
+
+  /* TITLE BAR */
+  .title-bar{display:flex;align-items:center;justify-content:space-between;padding:8px 18px;border-bottom:2px dashed #ccc;margin-top:4px;}
+  .prov-title{display:flex;align-items:center;gap:0;}
+  .blue-bar{width:5px;height:22px;background:#1a5fa8;margin-right:8px;border-radius:1px;}
+  .prov-title span{font-size:16px;color:#222;font-weight:400;}
+  .login-btn{background:#2e8b9a;color:white;border:none;padding:8px 18px;font-size:12px;font-weight:700;cursor:pointer;letter-spacing:0.5px;border-radius:2px;}
+  .login-btn:hover{background:#236b78;}
+
+  /* MAIN CONTENT */
+  .main{flex:1;display:flex;flex-direction:column;align-items:center;padding:28px 18px 18px;}
+  .warning{color:#cc0000;font-size:13px;font-weight:700;letter-spacing:0.3px;margin-bottom:22px;text-align:center;}
+
+  /* BLUE FORM BOX */
+  .form-box{background:linear-gradient(160deg,#3a8fd4 0%,#1e6bbf 40%,#1a5fa8 100%);border-radius:6px;padding:32px 40px 36px;width:100%;max-width:760px;}
+
+  .form-row{display:flex;align-items:center;gap:0;margin-bottom:18px;}
+  .form-lbl{color:white;font-size:14px;font-weight:700;min-width:200px;line-height:1.4;}
+  .usn-input{flex:1;padding:10px 14px;border:1.5px solid #cde;border-radius:3px;font-size:14px;color:#222;background:white;outline:none;}
+  .usn-input:focus{border-color:#fff;box-shadow:0 0 0 2px rgba(255,255,255,0.4);}
+
+  .sec-row{display:flex;align-items:center;gap:0;margin-bottom:0;}
+  .sec-input{padding:9px 12px;border:1.5px solid #cde;border-radius:3px;font-size:13px;color:#555;background:white;outline:none;width:220px;}
+  .sec-input::placeholder{color:#aaa;}
+  .sec-input:focus{border-color:#fff;}
+  .captcha-img{background:#e8e8e8;border:1px solid #bbb;border-radius:2px;padding:6px 12px;font-family:'Courier New',monospace;font-size:20px;font-weight:900;letter-spacing:5px;color:#1a3a6e;margin-left:10px;min-width:110px;text-align:center;position:relative;overflow:hidden;user-select:none;}
+  .captcha-img::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(35deg,transparent,transparent 4px,rgba(100,100,200,0.07) 4px,rgba(100,100,200,0.07) 5px);}
+  .refresh-btn{margin-left:6px;background:#e8e8e8;border:1px solid #bbb;border-radius:50%;width:36px;height:36px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;color:#333;flex-shrink:0;transition:background 0.15s;}
+  .refresh-btn:hover{background:#d0d0d0;}
+
+  .go-row{display:flex;justify-content:flex-end;margin-top:18px;}
+  .go-btn{background:#e8e8e8;border:1px solid #bbb;border-radius:3px;padding:7px 18px;font-size:13px;font-weight:700;cursor:pointer;color:#333;display:flex;align-items:center;gap:7px;transition:background 0.15s;}
+  .go-btn:hover{background:#d8d8d8;}
+  .go-dot{width:14px;height:14px;background:#2ecc40;border-radius:50%;flex-shrink:0;box-shadow:0 0 4px #2ecc40;}
+
+  /* TICKER */
+  .ticker-wrap{background:white;border-top:2px solid #1a5fa8;overflow:hidden;padding:9px 0;margin-top:auto;}
+  .ticker-inner{white-space:nowrap;display:inline-block;animation:scroll 28s linear infinite;font-size:12.5px;color:#333;}
+  @keyframes scroll{from{transform:translateX(100vw);}to{transform:translateX(-100%);}}
+
+  /* MODAL */
+  .modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.72);z-index:999;align-items:center;justify-content:center;min-height:100vh;}
+  .modal-bg.open{display:flex;}
+  .modal-box{background:white;border-radius:8px;overflow:hidden;width:90%;max-width:420px;animation:pop 0.38s cubic-bezier(0.34,1.56,0.64,1);}
+  @keyframes pop{from{transform:scale(0.5);opacity:0;}to{transform:scale(1);opacity:1;}}
+  .m-head{background:linear-gradient(135deg,#1a5fa8,#3a8fd4);padding:16px 20px;text-align:center;}
+  .m-head .m-usn{color:white;font-size:18px;font-weight:900;font-family:'Courier New',monospace;letter-spacing:2px;}
+  .m-head .m-tag{color:rgba(255,255,255,0.65);font-size:11px;margin-top:3px;}
+  .m-body{padding:28px 22px 22px;text-align:center;}
+  .big-e{font-size:58px;display:block;margin-bottom:10px;animation:bonce 0.65s infinite alternate;}
+  @keyframes bonce{from{transform:rotate(-7deg);}to{transform:rotate(7deg) scale(1.1);}}
+  .m-h{font-size:23px;font-weight:900;color:#1a5fa8;margin-bottom:6px;}
+  .m-s{font-size:13px;color:#555;line-height:1.7;margin-bottom:14px;}
+  .m-tag2{display:inline-block;border:2px dashed #1a5fa8;background:#eef4ff;color:#1a5fa8;padding:5px 18px;border-radius:20px;font-weight:700;font-size:12.5px;letter-spacing:1px;margin-bottom:16px;}
+  .m-close{width:100%;background:#cc0000;color:white;border:none;padding:11px;border-radius:4px;font-size:13px;font-weight:700;cursor:pointer;text-transform:uppercase;letter-spacing:0.4px;}
+  .m-close:hover{background:#a80000;}
+</style>
+
+<!-- HEADER -->
+<div class="hdr">
+  <img class="logo-svg" src="mine.png" alt="Logo">
+
+  <div class="powered">
+    <div class="powered-by">powered by</div>
+    <div class="contineo">contineo</div>
+  </div>
+</div>
+
+<!-- TITLE BAR -->
+<div class="title-bar">
+  <div class="prov-title">
+    <div class="blue-bar"></div>
+    <span>Provisional Results</span>
+  </div>
+  <button class="login-btn">CLICK HERE TO LOGIN</button>
+</div>
+
+<!-- MAIN CONTENT -->
+<div class="main">
+  <div class="warning">PLEASE NOTE THAT THE CGPA / SGPA DISPLAYED IS PROVISIONAL</div>
+
+  <div class="form-box">
+    <!-- USN ROW -->
+    <div class="form-row">
+      <div class="form-lbl">Enter the University Seat<br>No (USN)/ Roll No.</div>
+      <input type="text" id="inp-usn" class="usn-input" maxlength="12" oninput="this.value=this.value.toUpperCase()">
+    </div>
+
+    <!-- SECURITY CODE ROW -->
+    <div class="sec-row" style="align-items:center;">
+      <div class="form-lbl">Security Code</div>
+      <input type="text" id="inp-cap" class="sec-input" placeholder="Enter Security Code" maxlength="6" oninput="this.value=this.value.toUpperCase()">
+      <div class="captcha-img" id="captcha-display">SUKsr</div>
+      <div class="refresh-btn" onclick="refreshCap()" title="Refresh">&#8635;</div>
+    </div>
+
+    <!-- GO BTN -->
+    <div class="go-row">
+      <button class="go-btn" onclick="doSubmit()">
+        <span class="go-dot"></span>
+        GO
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- TICKER -->
+<div class="ticker-wrap">
+  <span class="ticker-inner">
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    Odd Semester End Examination A.Y: 2025-26 - Makeup results of Information Science &amp; Engineering Semester VII published on 18-03-2026 &nbsp;&nbsp;&bull;&nbsp;&nbsp;
+    Even Semester End Examination A.Y: 2025-26 - Results for all branches Semester II, IV, VI, VIII will be published shortly &nbsp;&nbsp;&bull;&nbsp;&nbsp;
+    New Horizon College of Engineering, Main Rd, near Marathahalli, Kaverappa Layout, Kadubeesanahalli, Bellandur, Bengaluru, Karnataka 560103 &nbsp;&nbsp;&bull;&nbsp;&nbsp;
+    NAAC Accredited 'A' Grade | VTU Affiliated Autonomous Institution | AICTE Approved
+  </span>
+</div>
+
+<!-- APRIL FOOL MODAL -->
+<div class="modal-bg" id="modal">
+  <div class="modal-box">
+    <div class="m-head">
+      <div class="m-usn" id="m-usn-show">1NH22CS001</div>
+      <div class="m-tag">Provisional Result &mdash; Jan/Feb 2026</div>
+    </div>
+    <div class="m-body">
+      <span class="big-e">&#127924;</span>
+      <div class="m-h">Happy April Fool!</div>
+      <div class="m-s">Gotcha, dear <strong>Horizonate</strong>! &#128514;<br>No result for you today — only laughs.<br>Share this with your friends too!</div>
+      <div class="m-tag2">&#127881; 1st April 2026 &#127881;</div><br>
+      <button class="m-close" onclick="closeModal()">Ha Ha, Got Me! &#128514;</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const caps = ['SUKsr','3K9X2','7MH4P','Q2R8T','5VN3J','K8B2X','9ZP4W'];
+let cur = 'SUKsr';
+
+function refreshCap(){
+  cur = caps[Math.floor(Math.random()*caps.length)];
+  document.getElementById('captcha-display').textContent = cur;
+}
+
+function doSubmit(){
+  const usn = document.getElementById('inp-usn').value.trim();
+  const cap = document.getElementById('inp-cap').value.trim().toUpperCase();
+  const capVal = cur.toUpperCase();
+
+  if(!usn){ alert('Please enter your USN / Roll No.'); return; }
+  if(!cap){ alert('Please enter the Security Code.'); return; }
+  if(cap !== capVal){ alert('Invalid Security Code. Please try again.'); refreshCap(); document.getElementById('inp-cap').value=''; return; }
+
+  document.getElementById('m-usn-show').textContent = usn;
+  document.getElementById('modal').classList.add('open');
+}
+
+function closeModal(){
+  document.getElementById('modal').classList.remove('open');
+  document.getElementById('inp-usn').value='';
+  document.getElementById('inp-cap').value='';
+  refreshCap();
+}
+</script>
